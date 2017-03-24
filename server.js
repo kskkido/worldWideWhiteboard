@@ -22,6 +22,10 @@ io.on('connection', function (socket) {
     socket.on('disconnect', function(){
       console.log('boo hoo, its done and this was my id that is gone forever ', id);
     })
+
+    socket.on('sent', function(start, end, color, shouldBroadcast) {
+      socket.broadcast.emit('received', start, end, color, shouldBroadcast)
+    })
 });
 
 
