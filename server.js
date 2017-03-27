@@ -10,20 +10,22 @@ var server = app.listen(1337, function () {
 });
 
 server.on('request', app);
-
 var io = socketio(server);
+var drawHistory = []
 io.on('connection', function (socket) {
     /* This function receives the newly connected socket.
        This function will be called for EACH browser that connects to our server. */
+    socket.emit('drawHistory', drawHistory)
     console.log('A new client has connected!');
     console.log(socket.id);
     var id = socket.id;
 
-    socket.on('disconnect', function(){
-      console.log('boo hoo, its done and this was my id that is gone forever ', id);
+    socket.on('disconnect', function(html){
+      html = html
     })
 
     socket.on('sent', function(start, end, color, shouldBroadcast) {
+      drawHistory.push({start: start, end: end, color: color})
       socket.broadcast.emit('received', start, end, color, shouldBroadcast)
     })
 });
